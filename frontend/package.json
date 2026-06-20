@@ -27,7 +27,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
-  "proxy": "http://localhost:5000",
+  "proxy": "https://api.portfolio.deviops.space",
   "eslintConfig": {
     "extends": ["react-app"]
   },
