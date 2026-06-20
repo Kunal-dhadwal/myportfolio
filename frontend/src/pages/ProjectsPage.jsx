@@ -21,17 +21,17 @@ function ProjectCard({ project, index }) {
       className="card group"
     >
       {/* Image carousel */}
-      {project.images?.length > 0 && (
+      {project?.images?.length > 0 && (
         <div className="relative overflow-hidden rounded-xl mb-4 aspect-video">
           <img
-            src={project.images[imgIdx]?.url}
-            alt={project.title}
+            src={project?.images[imgIdx]?.url}
+            alt={project?.title}
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
             loading="lazy"
           />
-          {project.images?.length > 1 && (
+          {project?.images?.length > 1 && (
             <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1">
-              {project.images.map((_, i) => (
+              {project?.images?.map((_, i) => (
                 <button key={i} onClick={() => setImgIdx(i)}
                   className={`w-1.5 h-1.5 rounded-full transition-colors ${i === imgIdx ? 'bg-primary-400' : 'bg-white/40'}`}
                 />
@@ -41,31 +41,31 @@ function ProjectCard({ project, index }) {
           {/* Status badge */}
           <div className="absolute top-3 right-3">
             <span className={`px-2 py-0.5 rounded-full text-xs font-semibold ${
-              project.status === 'completed' ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30' :
-              project.status === 'in-progress' ? 'bg-amber-500/20 text-amber-400 border border-amber-500/30' :
+              project?.status === 'completed' ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30' :
+              project?.status === 'in-progress' ? 'bg-amber-500/20 text-amber-400 border border-amber-500/30' :
               'bg-dark-700 text-dark-300'
             }`}>
-              {project.status}
+              {project?.status}
             </span>
           </div>
         </div>
       )}
 
       <div className="flex items-center gap-2 mb-2">
-        <span className="tag">{project.category}</span>
-        {project.subCategory && <span className="text-dark-500 text-xs">/ {project.subCategory}</span>}
-        {project.featured && <span className="text-amber-400 text-sm">★</span>}
+        <span className="tag">{project?.category}</span>
+        {project?.subCategory && <span className="text-dark-500 text-xs">/ {project.subCategory}</span>}
+        {project?.featured && <span className="text-amber-400 text-sm">★</span>}
       </div>
 
       <h3 className="text-white font-bold text-lg mb-2 group-hover:text-primary-400 transition-colors">
-        {project.title}
+        {project?.title}
       </h3>
 
       <p className={`text-dark-400 text-sm mb-4 ${expanded ? '' : 'line-clamp-2'}`}>
-        {project.description}
+        {project?.description}
       </p>
 
-      {project.description?.length > 150 && (
+      {project?.description?.length > 150 && (
         <button onClick={() => setExpanded(!expanded)} className="text-primary-400 text-xs mb-3">
           {expanded ? 'Show less' : 'Read more'}
         </button>
@@ -73,7 +73,7 @@ function ProjectCard({ project, index }) {
 
       {/* Tech stack */}
       <div className="flex flex-wrap gap-1.5 mb-4">
-        {project.techStack?.map(tech => (
+        {project?.techStack?.map(tech => (
           <span key={tech} className="text-xs px-2 py-0.5 rounded-md bg-dark-800 text-dark-300 border border-dark-700">
             {tech}
           </span>
@@ -81,7 +81,7 @@ function ProjectCard({ project, index }) {
       </div>
 
       {/* Timeline */}
-      {project.timeline?.startDate && (
+      {project?.timeline?.startDate && (
         <p className="text-dark-500 text-xs mb-4">
           {new Date(project.timeline.startDate).getFullYear()}
           {project.timeline.endDate && ` – ${new Date(project.timeline.endDate).getFullYear()}`}
@@ -90,19 +90,19 @@ function ProjectCard({ project, index }) {
 
       {/* Links */}
       <div className="flex items-center gap-4 pt-3 border-t border-dark-800">
-        {project.githubUrl && (
+        {project?.githubUrl && (
           <a href={project.githubUrl} target="_blank" rel="noopener noreferrer"
             className="flex items-center gap-1.5 text-dark-400 hover:text-white text-sm transition-colors">
             <span>⌥</span> GitHub
           </a>
         )}
-        {project.liveDemoUrl && (
+        {project?.liveDemoUrl && (
           <a href={project.liveDemoUrl} target="_blank" rel="noopener noreferrer"
             className="flex items-center gap-1.5 text-primary-400 hover:text-primary-300 text-sm transition-colors">
             <span>↗</span> Live Demo
           </a>
         )}
-        {project.videoUrl && (
+        {project?.videoUrl && (
           <a href={project.videoUrl} target="_blank" rel="noopener noreferrer"
             className="flex items-center gap-1.5 text-accent-cyan hover:text-white text-sm transition-colors">
             <span>▶</span> Video
@@ -168,7 +168,7 @@ export default function ProjectsPage() {
         {/* Category filters */}
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }}
           className="flex flex-wrap justify-center gap-2 mb-12">
-          {CATEGORIES.map(cat => (
+          {CATEGORIES?.map(cat => (
             <button
               key={cat}
               onClick={() => setActiveCategory(cat)}
@@ -197,7 +197,7 @@ export default function ProjectsPage() {
             <p className="text-dark-500 text-sm mb-6">{filtered?.length} project{filtered?.length !== 1 ? 's' : ''} found</p>
             <AnimatePresence mode="popLayout">
               <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {filtered.map((project, i) => (
+                {filtered?.map((project, i) => (
                   <ProjectCard key={project._id} project={project} index={i} />
                 ))}
               </motion.div>
