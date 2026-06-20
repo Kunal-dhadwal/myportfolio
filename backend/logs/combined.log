@@ -398,3 +398,7 @@
 {"level":"info","message":"::ffff:127.0.0.1 - - [27/May/2026:10:38:10 +0000] \"GET /api/profile HTTP/1.1\" 304 - \"http://localhost:3000/\" \"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36\"","timestamp":"2026-05-27 16:08:10"}
 {"level":"info","message":"Server running in development mode on port 5000","timestamp":"2026-06-04 18:15:43"}
 {"level":"info","message":"MongoDB Connected: ac-64xe0hu-shard-00-01.jq8lerc.mongodb.net","timestamp":"2026-06-04 18:15:44"}
+{"level":"info","message":"Server running in development mode on port 5000","timestamp":"2026-06-20 15:46:45"}
+{"level":"info","message":"MongoDB Connected: ac-64xe0hu-shard-00-00.jq8lerc.mongodb.net","timestamp":"2026-06-20 15:46:46"}
+{"level":"info","message":"Server running in development mode on port 5000","timestamp":"2026-06-20 15:49:50"}
+{"level":"info","message":"MongoDB Connected: ac-64xe0hu-shard-00-01.jq8lerc.mongodb.net","timestamp":"2026-06-20 15:49:51"}

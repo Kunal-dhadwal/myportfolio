@@ -76,8 +76,8 @@ function HeroSection({ profile }) {
   const y = useTransform(scrollY, [0, 500], [0, 150]);
 
   const typingSequence = profile?.typingTexts?.length
-    ? profile.typingTexts.flatMap(t => [t, 2000])
-    : ['Full Stack Developer', 2000, 'AI Engineer', 2000, 'DevOps Enthusiast', 2000];
+    ? profile.typingTexts.flatMap(t => [t, 1000])
+    : ['Full Stack Developer', 1000, 'AI Engineer', 1000, 'DevOps Enthusiast', 1000, 'React Developer', 1000,'Node.js Developer', 1000, 'Python Developer', 1000];
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-grid">
