@@ -137,7 +137,7 @@ export default function ProjectsPage() {
     load();
   }, [dispatch]);
 
-  const filtered = allProjects.filter(p => {
+  const filtered = allProjects?.filter(p => {
     const matchCat = activeCategory === 'All' || p.category === activeCategory;
     const matchSearch = !search || p.title.toLowerCase().includes(search.toLowerCase()) ||
       p.description.toLowerCase().includes(search.toLowerCase()) ||
@@ -181,7 +181,7 @@ export default function ProjectsPage() {
               {cat}
               {cat !== 'All' && (
                 <span className="ml-1 text-xs opacity-60">
-                  ({allProjects.filter(p => p.category === cat).length})
+                  ({allProjects?.filter(p => p.category === cat).length})
                 </span>
               )}
             </button>
