@@ -29,7 +29,7 @@ function ProjectCard({ project, index }) {
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
             loading="lazy"
           />
-          {project.images.length > 1 && (
+          {project.images?.length > 1 && (
             <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1">
               {project.images.map((_, i) => (
                 <button key={i} onClick={() => setImgIdx(i)}
@@ -65,7 +65,7 @@ function ProjectCard({ project, index }) {
         {project.description}
       </p>
 
-      {project.description.length > 150 && (
+      {project.description?.length > 150 && (
         <button onClick={() => setExpanded(!expanded)} className="text-primary-400 text-xs mb-3">
           {expanded ? 'Show less' : 'Read more'}
         </button>
@@ -181,7 +181,7 @@ export default function ProjectsPage() {
               {cat}
               {cat !== 'All' && (
                 <span className="ml-1 text-xs opacity-60">
-                  ({allProjects?.filter(p => p.category === cat).length})
+                  ({allProjects?.filter(p => p.category === cat)?.length})
                 </span>
               )}
             </button>
@@ -194,7 +194,7 @@ export default function ProjectsPage() {
           </div>
         ) : (
           <>
-            <p className="text-dark-500 text-sm mb-6">{filtered.length} project{filtered.length !== 1 ? 's' : ''} found</p>
+            <p className="text-dark-500 text-sm mb-6">{filtered?.length} project{filtered?.length !== 1 ? 's' : ''} found</p>
             <AnimatePresence mode="popLayout">
               <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {filtered.map((project, i) => (
@@ -202,7 +202,7 @@ export default function ProjectsPage() {
                 ))}
               </motion.div>
             </AnimatePresence>
-            {filtered.length === 0 && (
+            {filtered?.length === 0 && (
               <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-center py-20">
                 <p className="text-dark-500 text-lg">No projects found</p>
               </motion.div>
