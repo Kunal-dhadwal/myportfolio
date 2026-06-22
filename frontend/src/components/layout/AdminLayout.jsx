@@ -45,7 +45,7 @@ export default function AdminLayout() {
             {/* Brand */}
             <div className="p-6 border-b border-primary-500/10">
               <Link to="/" className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary-500 to-accent-violet flex items-center justify-center text-white font-bold text-sm">AJ</div>
+                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary-500 to-accent-violet flex items-center justify-center text-white font-bold text-sm">KD</div>
                 <div>
                   <p className="text-white font-semibold text-sm">{user?.name || 'Admin'}</p>
                   <p className="text-dark-400 text-xs">Administrator</p>

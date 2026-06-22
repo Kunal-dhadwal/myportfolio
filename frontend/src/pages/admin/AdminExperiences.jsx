@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import AdminCRUDPage from "../../components/admin/AdminCRUDPage";
 import { experiencesAPI } from "../../services/api";
 import toast from "react-hot-toast";
@@ -8,45 +8,72 @@ const TECH_OPTIONS = [
   "TypeScript","GraphQL","Redis","Terraform","Jenkins","Go","Java","Spring Boot",
 ];
 
-const ExperienceForm = ({ data, onChange }) => {
+const ExperienceForm = ({ initialData, onSuccess }) => {
+  const [form, setForm] = useState({
+    companyName: "", jobRole: "", jobType: "Full-time", location: "",
+    startDate: "", endDate: "", isCurrent: false, companyLogo: "",
+    responsibilities: [""], achievements: [], technologiesUsed: [],
+    order: 0, isPublished: true,
+    ...(initialData || {}),
+    startDate: initialData?.startDate ? initialData.startDate.slice(0, 10) : (initialData?.timeline?.startDate ? initialData.timeline.startDate.slice(0,10) : ""),
+    endDate: initialData?.endDate ? initialData.endDate.slice(0, 10) : (initialData?.timeline?.endDate ? initialData.timeline.endDate.slice(0,10) : ""),
+  });
+  const [loading, setLoading] = useState(false);
   const [techInput, setTechInput] = useState("");
 
+  const set = (k, v) => setForm(p => ({ ...p, [k]: v }));
+
   const addTech = (tech) => {
-    const current = data.technologiesUsed || [];
-    if (!current.includes(tech)) onChange("technologiesUsed", [...current, tech]);
+    const current = form.technologiesUsed || [];
+    if (!current.includes(tech)) set('technologiesUsed', [...current, tech]);
   };
-  const removeTech = (tech) =>
-    onChange("technologiesUsed", (data.technologiesUsed || []).filter((t) => t !== tech));
+  const removeTech = (tech) => set('technologiesUsed', (form.technologiesUsed || []).filter((t) => t !== tech));
 
   const handleResponsibility = (i, val) => {
-    const arr = [...(data.responsibilities || [])];
+    const arr = [...(form.responsibilities || [])];
     arr[i] = val;
-    onChange("responsibilities", arr);
+    set('responsibilities', arr);
   };
-  const addResponsibility = () =>
-    onChange("responsibilities", [...(data.responsibilities || []), ""]);
-  const removeResponsibility = (i) =>
-    onChange("responsibilities", (data.responsibilities || []).filter((_, idx) => idx !== i));
+  const addResponsibility = () => set('responsibilities', [...(form.responsibilities || []), ""]);
+  const removeResponsibility = (i) => set('responsibilities', (form.responsibilities || []).filter((_, idx) => idx !== i));
 
   const handleAchievement = (i, val) => {
-    const arr = [...(data.achievements || [])];
+    const arr = [...(form.achievements || [])];
     arr[i] = val;
-    onChange("achievements", arr);
+    set('achievements', arr);
   };
-  const addAchievement = () =>
-    onChange("achievements", [...(data.achievements || []), ""]);
-  const removeAchievement = (i) =>
-    onChange("achievements", (data.achievements || []).filter((_, idx) => idx !== i));
+  const addAchievement = () => set('achievements', [...(form.achievements || []), ""]);
+  const removeAchievement = (i) => set('achievements', (form.achievements || []).filter((_, idx) => idx !== i));
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      const payload = { ...form };
+      if (initialData?._id) {
+        await experiencesAPI.update(initialData._id, payload);
+        toast.success('Experience updated!');
+      } else {
+        await experiencesAPI.create(payload);
+        toast.success('Experience created!');
+      }
+      onSuccess();
+    } catch (err) {
+      toast.error(err.response?.data?.message || 'Save failed');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
-    <div className="space-y-4">
+    <form onSubmit={handleSubmit} className="space-y-4">
       <div className="grid grid-cols-2 gap-4">
         <div>
           <label className="block text-sm text-gray-400 mb-1">Company Name *</label>
           <input
             className="w-full bg-dark-800 border border-dark-600 rounded-lg px-3 py-2 text-white focus:border-primary-500 outline-none"
-            value={data.companyName || ""}
-            onChange={(e) => onChange("companyName", e.target.value)}
+            value={form.companyName || ""}
+            onChange={(e) => set('companyName', e.target.value)}
             placeholder="e.g. Google"
           />
         </div>
@@ -54,8 +81,8 @@ const ExperienceForm = ({ data, onChange }) => {
           <label className="block text-sm text-gray-400 mb-1">Job Role *</label>
           <input
             className="w-full bg-dark-800 border border-dark-600 rounded-lg px-3 py-2 text-white focus:border-primary-500 outline-none"
-            value={data.jobRole || ""}
-            onChange={(e) => onChange("jobRole", e.target.value)}
+            value={form.jobRole || ""}
+            onChange={(e) => set('jobRole', e.target.value)}
             placeholder="e.g. Senior Frontend Engineer"
           />
         </div>
@@ -66,8 +93,8 @@ const ExperienceForm = ({ data, onChange }) => {
           <label className="block text-sm text-gray-400 mb-1">Job Type</label>
           <select
             className="w-full bg-dark-800 border border-dark-600 rounded-lg px-3 py-2 text-white focus:border-primary-500 outline-none"
-            value={data.jobType || "Full-time"}
-            onChange={(e) => onChange("jobType", e.target.value)}
+            value={form.jobType || "Full-time"}
+            onChange={(e) => set('jobType', e.target.value)}
           >
             {["Full-time","Part-time","Contract","Internship","Freelance"].map((t) => (
               <option key={t}>{t}</option>
@@ -78,8 +105,8 @@ const ExperienceForm = ({ data, onChange }) => {
           <label className="block text-sm text-gray-400 mb-1">Location</label>
           <input
             className="w-full bg-dark-800 border border-dark-600 rounded-lg px-3 py-2 text-white focus:border-primary-500 outline-none"
-            value={data.location || ""}
-            onChange={(e) => onChange("location", e.target.value)}
+            value={form.location || ""}
+            onChange={(e) => set('location', e.target.value)}
             placeholder="e.g. San Francisco, CA"
           />
         </div>
@@ -91,8 +118,8 @@ const ExperienceForm = ({ data, onChange }) => {
           <input
             type="date"
             className="w-full bg-dark-800 border border-dark-600 rounded-lg px-3 py-2 text-white focus:border-primary-500 outline-none"
-            value={data.startDate ? data.startDate.slice(0, 10) : ""}
-            onChange={(e) => onChange("startDate", e.target.value)}
+            value={form.startDate ? form.startDate.slice(0, 10) : ""}
+            onChange={(e) => set('startDate', e.target.value)}
           />
         </div>
         <div>
@@ -100,17 +127,17 @@ const ExperienceForm = ({ data, onChange }) => {
           <input
             type="date"
             className="w-full bg-dark-800 border border-dark-600 rounded-lg px-3 py-2 text-white focus:border-primary-500 outline-none"
-            value={data.endDate ? data.endDate.slice(0, 10) : ""}
-            onChange={(e) => onChange("endDate", e.target.value)}
-            disabled={data.isCurrent}
+            value={form.endDate ? form.endDate.slice(0, 10) : ""}
+            onChange={(e) => set('endDate', e.target.value)}
+            disabled={form.isCurrent}
           />
           <label className="flex items-center gap-2 mt-1 text-sm text-gray-400 cursor-pointer">
             <input
               type="checkbox"
-              checked={data.isCurrent || false}
+              checked={form.isCurrent || false}
               onChange={(e) => {
-                onChange("isCurrent", e.target.checked);
-                if (e.target.checked) onChange("endDate", "");
+                set('isCurrent', e.target.checked);
+                if (e.target.checked) set('endDate', '');
               }}
               className="accent-primary-500"
             />
@@ -123,8 +150,8 @@ const ExperienceForm = ({ data, onChange }) => {
         <label className="block text-sm text-gray-400 mb-1">Company Logo URL</label>
         <input
           className="w-full bg-dark-800 border border-dark-600 rounded-lg px-3 py-2 text-white focus:border-primary-500 outline-none"
-          value={data.companyLogo || ""}
-          onChange={(e) => onChange("companyLogo", e.target.value)}
+          value={form.companyLogo || ""}
+          onChange={(e) => set('companyLogo', e.target.value)}
           placeholder="https://..."
         />
       </div>
@@ -139,7 +166,7 @@ const ExperienceForm = ({ data, onChange }) => {
             className="text-xs text-primary-400 hover:text-primary-300"
           >+ Add</button>
         </div>
-        {(data.responsibilities || []).map((r, i) => (
+        {(form.responsibilities || []).map((r, i) => (
           <div key={i} className="flex gap-2 mb-2">
             <input
               className="flex-1 bg-dark-800 border border-dark-600 rounded-lg px-3 py-2 text-white focus:border-primary-500 outline-none text-sm"
@@ -166,7 +193,7 @@ const ExperienceForm = ({ data, onChange }) => {
             className="text-xs text-primary-400 hover:text-primary-300"
           >+ Add</button>
         </div>
-        {(data.achievements || []).map((a, i) => (
+        {(form.achievements || []).map((a, i) => (
           <div key={i} className="flex gap-2 mb-2">
             <input
               className="flex-1 bg-dark-800 border border-dark-600 rounded-lg px-3 py-2 text-white focus:border-primary-500 outline-none text-sm"
@@ -187,7 +214,7 @@ const ExperienceForm = ({ data, onChange }) => {
       <div>
         <label className="block text-sm text-gray-400 mb-2">Technologies Used</label>
         <div className="flex flex-wrap gap-2 mb-2">
-          {(data.technologiesUsed || []).map((t) => (
+          {(form.technologiesUsed || []).map((t) => (
             <span
               key={t}
               className="flex items-center gap-1 bg-primary-500/20 text-primary-300 px-2 py-1 rounded-full text-xs"
@@ -198,7 +225,7 @@ const ExperienceForm = ({ data, onChange }) => {
           ))}
         </div>
         <div className="flex gap-2 flex-wrap">
-          {TECH_OPTIONS.filter((t) => !(data.technologiesUsed || []).includes(t)).map((t) => (
+          {TECH_OPTIONS.filter((t) => !(form.technologiesUsed || []).includes(t)).map((t) => (
             <button
               key={t}
               type="button"
@@ -226,27 +253,53 @@ const ExperienceForm = ({ data, onChange }) => {
           <input
             type="number"
             className="w-full bg-dark-800 border border-dark-600 rounded-lg px-3 py-2 text-white focus:border-primary-500 outline-none"
-            value={data.order ?? 0}
-            onChange={(e) => onChange("order", Number(e.target.value))}
+            value={form.order ?? 0}
+            onChange={(e) => set('order', Number(e.target.value))}
           />
         </div>
         <div className="flex items-end pb-2">
           <label className="flex items-center gap-2 text-sm text-gray-400 cursor-pointer">
             <input
               type="checkbox"
-              checked={data.isPublished ?? true}
-              onChange={(e) => onChange("isPublished", e.target.checked)}
+              checked={form.isPublished ?? true}
+              onChange={(e) => set('isPublished', e.target.checked)}
               className="accent-primary-500"
             />
             Published
           </label>
         </div>
       </div>
-    </div>
+
+      <button type="submit" disabled={loading} className="btn-primary w-full py-3 disabled:opacity-50">
+        {loading ? 'Saving...' : (initialData ? 'Update Experience' : 'Create Experience')}
+      </button>
+    </form>
   );
 };
 
 export default function AdminExperiences() {
+  const [experiences, setExperiences] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  const load = useCallback(async () => {
+    try {
+      const res = await experiencesAPI.getAllAdmin?.() ?? await experiencesAPI.getAll();
+      // support different response shapes
+      setExperiences(res.data?.experiences ?? res.data?.data ?? []);
+    } catch (err) {
+      toast.error('Failed to load experiences');
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => { load(); }, [load]);
+
+  const handleDelete = async (id) => {
+    await experiencesAPI.delete(id);
+    setExperiences(p => p.filter(x => x._id !== id));
+  };
+
   const columns = [
     { key: "companyName", label: "Company" },
     { key: "jobRole", label: "Role" },
@@ -271,32 +324,20 @@ export default function AdminExperiences() {
     },
   ];
 
-  const fetchFn = async () => {
-    const res = await experiencesAPI.getAll();
-    return res.data.data || [];
-  };
-  const createFn = (d) => experiencesAPI.create(d);
-  const updateFn = (id, d) => experiencesAPI.update(id, d);
-  const deleteFn = (id) => experiencesAPI.delete(id);
-
-  const defaultData = {
-    companyName: "", jobRole: "", jobType: "Full-time", location: "",
-    startDate: "", endDate: "", isCurrent: false, companyLogo: "",
-    responsibilities: [""], achievements: [], technologiesUsed: [],
-    order: 0, isPublished: true,
-  };
+  const FormWithRefresh = (props) => (
+    <ExperienceForm {...props} onSuccess={() => { props.onSuccess(); load(); }} />
+  );
 
   return (
     <AdminCRUDPage
       title="Experience"
+      addButtonLabel="Add Experience"
+      items={experiences}
+      loading={loading}
       columns={columns}
-      fetchFn={fetchFn}
-      createFn={createFn}
-      updateFn={updateFn}
-      deleteFn={deleteFn}
-      FormComponent={ExperienceForm}
-      defaultData={defaultData}
-      searchKey="companyName"
+      onDelete={handleDelete}
+      FormComponent={FormWithRefresh}
+      formTitle="Add Experience"
     />
   );
 }

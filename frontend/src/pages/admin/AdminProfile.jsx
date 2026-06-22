@@ -31,7 +31,7 @@ export default function AdminProfile() {
 
   useEffect(() => {
     profileAPI.get().then((res) => {
-      setProfile(res.data.data || {});
+      setProfile(res.data.profile || {});
     }).catch(() => setProfile({}))
     .finally(() => setLoading(false));
   }, []);
@@ -49,7 +49,8 @@ export default function AdminProfile() {
       return next;
     });
   };
-
+ console.log(profile,"lie 52");
+ 
   const handleImageUpload = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -257,14 +258,14 @@ export default function AdminProfile() {
       {/* SEO */}
       <Section title="SEO Settings">
         <div className="space-y-4">
-          <Input label="Meta Title" value={profile.seo?.title} onChange={(v) => set("seo.title", v)} placeholder="John Doe – Full Stack Developer" />
+          <Input label="Meta Title" value={profile.seo?.metaTitle} onChange={(v) => set("seo.metaTitle", v)} placeholder="John Doe – Full Stack Developer" />
           <div>
             <label className="block text-sm text-gray-400 mb-1">Meta Description</label>
             <textarea
               rows={2}
               className="w-full bg-dark-800 border border-dark-600 rounded-lg px-3 py-2 text-white focus:border-primary-500 outline-none resize-none"
-              value={profile.seo?.description || ""}
-              onChange={(e) => set("seo.description", e.target.value)}
+              value={profile.seo?.metaDescription || ""}
+              onChange={(e) => set("seo.metaDescription", e.target.value)}
               placeholder="Portfolio of John Doe – Full Stack Developer specializing in React and Node.js"
             />
           </div>

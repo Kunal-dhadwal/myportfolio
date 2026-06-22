@@ -29,6 +29,12 @@ const profileSchema = new mongoose.Schema({
     keywords: [String],
     ogImage: String,
   },
+  contact:{
+      email: String,
+      phone: String,
+      location: String,
+      website: String
+  },
   themeColor: { type: String, default: '#6366f1' },
   isAvailableForWork: { type: Boolean, default: true },
 }, { timestamps: true });

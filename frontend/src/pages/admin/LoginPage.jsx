@@ -45,7 +45,7 @@ export default function LoginPage() {
           {/* Header */}
           <div className="text-center mb-8">
             <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary-500 to-accent-violet mx-auto mb-4 flex items-center justify-center text-white font-bold text-2xl shadow-lg shadow-primary-500/40 animate-glow">
-              AJ
+              KD
             </div>
             <h1 className="text-2xl font-bold text-white font-display">Admin Login</h1>
             <p className="text-dark-400 text-sm mt-1">Portfolio Management System</p>

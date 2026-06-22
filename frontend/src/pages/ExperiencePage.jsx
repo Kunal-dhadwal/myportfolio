@@ -24,47 +24,47 @@ function ExperienceCard({ exp, index }) {
       <div className="card group">
         {/* Header */}
         <div className="flex items-start gap-4 mb-4">
-          {exp.companyLogo ? (
-            <img src={exp.companyLogo} alt={exp.companyName} className="w-12 h-12 rounded-xl object-contain bg-dark-700 p-1" />
+          {exp?.companyLogo ? (
+            <img src={exp?.companyLogo} alt={exp?.companyName} className="w-12 h-12 rounded-xl object-contain bg-dark-700 p-1" />
           ) : (
             <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary-500/20 to-accent-violet/20 border border-primary-500/20 flex items-center justify-center text-primary-400 font-bold text-lg">
-              {exp.companyName[0]}
+              {exp?.companyName[0]}
             </div>
           )}
           <div className="flex-1">
             <div className="flex flex-wrap items-start justify-between gap-2">
               <div>
-                <h3 className="text-white font-bold text-xl group-hover:text-primary-400 transition-colors">{exp.jobRole}</h3>
+                <h3 className="text-white font-bold text-xl group-hover:text-primary-400 transition-colors">{exp?.jobRole}</h3>
                 <div className="flex items-center gap-2 mt-1">
-                  {exp.companyWebsite ? (
-                    <a href={exp.companyWebsite} target="_blank" rel="noopener noreferrer"
-                      className="text-primary-400 hover:text-primary-300 font-semibold">{exp.companyName}</a>
+                  {exp?.companyWebsite ? (
+                    <a href={exp?.companyWebsite} target="_blank" rel="noopener noreferrer"
+                      className="text-primary-400 hover:text-primary-300 font-semibold">{exp?.companyName}</a>
                   ) : (
-                    <span className="text-primary-400 font-semibold">{exp.companyName}</span>
+                    <span className="text-primary-400 font-semibold">{exp?.companyName}</span>
                   )}
                   <span className="text-dark-600">·</span>
-                  <span className="text-dark-400 text-sm">{exp.jobType}</span>
+                  <span className="text-dark-400 text-sm">{exp?.jobType}</span>
                 </div>
               </div>
               <div className="text-right">
                 <div className="text-dark-300 text-sm font-mono">
-                  {formatDate(exp.startDate)} — {exp.isCurrent ? <span className="text-emerald-400">Present</span> : formatDate(exp.endDate)}
+                  {formatDate(exp?.startDate)} — {exp?.isCurrent ? <span className="text-emerald-400">Present</span> : formatDate(exp?.endDate)}
                 </div>
-                {exp.totalDuration && (
-                  <div className="text-dark-500 text-xs mt-0.5">{exp.totalDuration}</div>
+                {exp?.totalDuration && (
+                  <div className="text-dark-500 text-xs mt-0.5">{exp?.totalDuration}</div>
                 )}
               </div>
             </div>
-            {exp.location && <p className="text-dark-500 text-sm mt-1">📍 {exp.location}</p>}
+            {exp?.location && <p className="text-dark-500 text-sm mt-1">📍 {exp?.location}</p>}
           </div>
         </div>
 
         {/* Responsibilities */}
-        {exp.responsibilities?.length > 0 && (
+        {exp?.responsibilities?.length > 0 && (
           <div className="mb-4">
             <h4 className="text-dark-300 text-xs font-semibold uppercase tracking-widest mb-2">Responsibilities</h4>
             <ul className="space-y-1.5">
-              {exp.responsibilities.map((r, i) => (
+              {exp?.responsibilities.map((r, i) => (
                 <li key={i} className="flex items-start gap-2 text-dark-400 text-sm">
                   <span className="text-primary-500 mt-1 shrink-0">▸</span>
                   {r}
@@ -75,11 +75,11 @@ function ExperienceCard({ exp, index }) {
         )}
 
         {/* Achievements */}
-        {exp.achievements?.length > 0 && (
+        {exp?.achievements?.length > 0 && (
           <div className="mb-4 p-3 rounded-xl bg-primary-500/5 border border-primary-500/10">
             <h4 className="text-primary-400 text-xs font-semibold uppercase tracking-widest mb-2">🏆 Achievements</h4>
             <ul className="space-y-1">
-              {exp.achievements.map((a, i) => (
+              {exp?.achievements.map((a, i) => (
                 <li key={i} className="text-dark-300 text-sm">✓ {a}</li>
               ))}
             </ul>
@@ -87,9 +87,9 @@ function ExperienceCard({ exp, index }) {
         )}
 
         {/* Tech stack */}
-        {exp.technologiesUsed?.length > 0 && (
+        {exp?.technologiesUsed?.length > 0 && (
           <div className="flex flex-wrap gap-1.5">
-            {exp.technologiesUsed.map(tech => (
+            {exp?.technologiesUsed.map(tech => (
               <span key={tech} className="tag text-xs">{tech}</span>
             ))}
           </div>
@@ -179,7 +179,7 @@ export default function ExperiencePage() {
             <div className="timeline-line" />
             <div className="space-y-8">
               {experiences?.map((exp, i) => (
-                <ExperienceCard key={exp._id} exp={exp} index={i} />
+                <ExperienceCard key={exp?._id} exp={exp} index={i} />
               ))}
             </div>
           </div>

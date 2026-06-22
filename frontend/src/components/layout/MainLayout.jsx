@@ -37,7 +37,7 @@ const Navbar = () => {
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2 group">
             <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary-500 to-accent-violet flex items-center justify-center text-white font-bold text-sm group-hover:scale-110 transition-transform">
-              AJ
+              KD
             </div>
             <span className="font-bold text-white hidden sm:block font-display">Kunal Dhadwal</span>
           </Link>
@@ -120,7 +120,7 @@ const Footer = () => (
     <div className="container-max px-4 sm:px-6 lg:px-8">
       <div className="flex flex-col md:flex-row items-center justify-between gap-4">
         <div className="flex items-center gap-2">
-          <div className="w-6 h-6 rounded bg-gradient-to-br from-primary-500 to-accent-violet flex items-center justify-center text-white text-xs font-bold">AJ</div>
+          <div className="w-6 h-6 rounded bg-gradient-to-br from-primary-500 to-accent-violet flex items-center justify-center text-white text-xs font-bold">KD</div>
           <span className="text-dark-400 text-sm">© {new Date().getFullYear()} Kunal Dhadwal. All rights reserved.</span>
         </div>
         <div className="flex items-center gap-6">

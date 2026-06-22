@@ -77,8 +77,7 @@ function HeroSection({ profile }) {
 
   const typingSequence = profile?.typingTexts?.length
     ? profile.typingTexts.flatMap(t => [t, 1000])
-    : ['Full Stack Developer', 1000, 'AI Engineer', 1000, 'DevOps Enthusiast', 1000, 'React Developer', 1000,'Node.js Developer', 1000, 'Python Developer', 1000];
-
+    : ['Full Stack Developer', 1000, 'AI Engineer', 1000, 'DevOps Enthusiast', 1000, 'React Developer', 1000, 'Node.js Developer', 1000, 'Python Developer', 1000];
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-grid">
       <ParticleCanvas />
@@ -116,13 +115,16 @@ function HeroSection({ profile }) {
           transition={{ duration: 0.8, delay: 0.4 }}
           className="text-2xl sm:text-3xl text-dark-300 mb-4 h-10"
         >
-          <TypeAnimation
-            sequence={typingSequence}
-            wrapper="span"
-            speed={50}
-            repeat={Infinity}
-            className="text-primary-400 font-semibold"
-          />
+          {typingSequence?.length > 0 && (
+            <TypeAnimation
+              key={JSON.stringify(typingSequence)}
+              sequence={typingSequence}
+              wrapper="span"
+              speed={50}
+              repeat={Infinity}
+              className="text-primary-400 font-semibold"
+            />
+          )}
         </motion.div>
 
         <motion.p
@@ -384,7 +386,7 @@ function StatsSection({ experiences, projects, certificates }) {
     { label: 'Projects Completed', value: `${projects?.length || 0}+` },
     { label: 'Certifications', value: `${certificates?.length || 0}` },
     { label: 'Technologies', value: '20+' },
-  ];
+      ];
 
   return (
     <section className="py-16 border-y border-primary-500/10" ref={ref}>

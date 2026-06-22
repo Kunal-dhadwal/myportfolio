@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
-import { contactsAPI } from '../services/api';
+import { contactsAPI, profileAPI } from '../services/api';
 import toast from 'react-hot-toast';
 
 export default function ContactPage() {
@@ -30,12 +30,25 @@ export default function ContactPage() {
       setLoading(false);
     }
   };
-
-  const contactInfo = [
+  const [contactInfo,setContactInfo] = useState([
     { icon: '📧', label: 'Email', value: 'alex@portfolio.com', href: 'mailto:alex@portfolio.com' },
     { icon: '📍', label: 'Location', value: 'San Francisco, CA' },
     { icon: '💼', label: 'LinkedIn', value: '/in/alexjohnson', href: 'https://linkedin.com' },
-  ];
+  ]);
+  useEffect(() => {
+    profileAPI.get().then((res) => {
+      setContactInfo([
+    { icon: '📧', label: 'Email', value: res.data.profile?.contact?.email, href: `mailto:${res.data.profile?.contact?.email}` },
+    { icon: '📍', label: 'Location', value: res.data.profile?.contact?.location || 'N/A' },
+    { icon: '💼', label: 'LinkedIn', value: res.data.profile?.socialLinks?.linkedin || 'N/A', href: res.data.profile?.socialLinks?.linkedin ? res.data.profile?.socialLinks?.linkedin : 'N/A' },
+  ]);
+    }).catch(() => setContactInfo([
+    { icon: '📧', label: 'Email', value: 'NA', href: 'mailto:NA' },
+    { icon: '📍', label: 'Location', value: 'N/A' },
+    { icon: '💼', label: 'LinkedIn', value: 'N/A', href: 'N/A' },
+  ]))
+    .finally(() => setLoading(false));
+  }, []);
 
   return (
     <div className="section-padding pt-28" ref={ref}>
