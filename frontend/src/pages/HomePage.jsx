@@ -78,7 +78,9 @@ function HeroSection({ profile }) {
   const typingSequence = profile?.typingTexts?.length
     ? profile.typingTexts.flatMap(t => [t, 1000])
     : ['Full Stack Developer', 1000, 'AI Engineer', 1000, 'DevOps Enthusiast', 1000, 'React Developer', 1000, 'Node.js Developer', 1000, 'Python Developer', 1000];
-  return (
+  console.log(typingSequence);
+  
+    return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-grid">
       <ParticleCanvas />
       {/* Gradient orbs */}
